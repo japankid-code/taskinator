@@ -5,7 +5,11 @@ var taskFormHandler = function(event) {
     event.preventDefault();
     let taskNameInput = document.querySelector("input[name='task-name']").value;
     let taskTypeInput = document.querySelector("select[name='task-type']").value;
-    
+    var taskDataObj = {
+        name: taskNameInput,
+        type: taskTypeInput
+    } // data repackaged as an object to be sent to createTaskEl below
+    createTaskEl(taskDataObj);
     };
 
 var createTaskEl = function(taskDataObj) {
@@ -15,7 +19,7 @@ var createTaskEl = function(taskDataObj) {
     let taskInfoEl = document.createElement("div");
     taskInfoEl.className = "task-info";
     // add HTML content to div
-    taskInfoEl.innerHTML = `<h3 class='task-name'>${taskNameInput}</h3><span class='task-type'>${taskTypeInput}</span>`;
+    taskInfoEl.innerHTML = `<h3 class='task-name'>${taskDataObj.name}</h3><span class='task-type'>${taskDataObj.type}</span>`;
     listItemEl.appendChild(taskInfoEl); // puts a div (adding content) inside the task list item
     tasksToDoEl.appendChild(listItemEl); // adds the entire task list item to the list
 }
