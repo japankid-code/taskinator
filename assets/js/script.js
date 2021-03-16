@@ -125,6 +125,15 @@ var completeEditTask = function(taskName, taskType, taskId) {
 
 var deleteTask = function(taskId) {
     var taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`)
+    var updatedTaskArr = [];
+    // loop through current tasks, pushing keepers to the new array, ditching deleted
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].id !== parseInt(taskId)) {
+            updatedTaskArr.push(tasks[i])
+        }
+    }
+    // reassign tasks to updatedTasksArr so they are the same (neither contain the deleted task)
+    tasks = updatedTaskArr;
     taskSelected.remove();
 }
 
