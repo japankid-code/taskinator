@@ -13,7 +13,7 @@ var taskFormHandler = function(event) {
     }
     var isEdit = formEl.hasAttribute("data-task-id");
     if (isEdit) {
-        var taskId = formEl.getAnimations("data-task-id");
+        var taskId = formEl.getAttribute("data-task-id");
         completeEditTask(taskNameInput, taskTypeInput, taskId);
     } else { // no data attribute, create object as usual
         var taskDataObj = {
@@ -79,20 +79,20 @@ var taskButtonHandler = function(e) {
     targetEl = e.target;
     if (targetEl.matches(".edit-btn")) {
         var taskId = targetEl.getAttribute("data-task-id");
-        editTask(taskId);
+        beginEditTask(taskId);
     } else if (targetEl.matches(".delete-btn")) {
         var taskId = targetEl.getAttribute("data-task-id");
         deleteTask(taskId);
     }
 }
 
-var editTask = function(taskId) {
+var beginEditTask = function(taskId) {
     var taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`)
     // narrowing scope of querySelector, get the h3 and span elements from the taskSelected
     var taskName = taskSelected.querySelector("h3.task-name").textContent;
     var taskType = taskSelected.querySelector("span.task-type").textContent;
     // grab the task name and type using the same selector from taskFormHandler
-    document.querySelector(`input[name='task-name']`).value = taskName;
+    document.querySelector(`input[name='task-name']`).value = taskName; // = after because update
     document.querySelector(`select[name='task-type']`).value = taskType;
     document.querySelector(`#save-task`).textContent = "Save Task";
     // add data attribute to form, letting us know it is in editing state
@@ -100,8 +100,15 @@ var editTask = function(taskId) {
 }
 
 var completeEditTask = function(taskName, taskType, taskId) {
-    console.log(taskName, taskType, taskId);
-};
+    // find the list item
+    var taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`)
+    // set new values
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+    alert("Task Updated!");
+    formEl.removeAttribute("data-task-id");
+    document.querySelector("#save-task").textContent = "Add Task";
+}
 
 var deleteTask = function(taskId) {
     var taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`)
