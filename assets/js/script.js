@@ -11,11 +11,17 @@ var taskFormHandler = function(event) {
         alert("You need to fill out the task form!");
         return false;
     }
-    var taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput
-    } // data repackaged as an object to be sent to createTaskEl below
-    createTaskEl(taskDataObj);
+    var isEdit = formEl.hasAttribute("data-task-id");
+    if (isEdit) {
+        var taskId = formEl.getAnimations("data-task-id");
+        completeEditTask(taskNameInput, taskTypeInput, taskId);
+    } else { // no data attribute, create object as usual
+        var taskDataObj = {
+            name: taskNameInput,
+            type: taskTypeInput
+        }; // data repackaged as an object to be sent to createTaskEl below
+        createTaskEl(taskDataObj); // gets called if no data-* present
+    }
     formEl.reset();
 };
 
@@ -89,8 +95,13 @@ var editTask = function(taskId) {
     document.querySelector(`input[name='task-name']`).value = taskName;
     document.querySelector(`select[name='task-type']`).value = taskType;
     document.querySelector(`#save-task`).textContent = "Save Task";
+    // add data attribute to form, letting us know it is in editing state
     formEl.setAttribute("data-task-id", taskId);
 }
+
+var completeEditTask = function(taskName, taskType, taskId) {
+    console.log(taskName, taskType, taskId);
+};
 
 var deleteTask = function(taskId) {
     var taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`)
