@@ -6,4 +6,4 @@ In case you were wondering, [repo is here](https://github.com/japankid-code/task
 
 ## preview image
 
-![preview of site]()
+![preview of site](preview.png)
